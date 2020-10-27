@@ -8,6 +8,9 @@ contract ERCcitizen {
     // _allowances: Mapping FROM account addresses TO a mapping FROM spender addresses TO an allowance amount.
     mapping(address => mapping(address => uint256)) private _allowances;
 
+    // _ownerAddress: Address of the owner, used for administrative and sensitive function.
+    address payable _ownerAddress;
+
     // _name: Name of the token
     string private _name;
 
@@ -21,14 +24,19 @@ contract ERCcitizen {
     // _totalSupply: Total of the token supply
     uint256 private _totalSupply;
 
+    // _cap: Maximum amount of the token supply
+    uint256 private _cap;
+
     constructor(
         string memory name,
         string memory symbol,
-        uint8 decimals
+        uint8 decimals,
+        uint256 cap
     ) public {
         _name = name;
         _symbol = symbol;
         _decimals = decimals;
+        _cap = cap;
     }
 
     // name() returns the name of the token

@@ -127,7 +127,7 @@ contract ERCcitizen {
         );
         require(
             _allowances[_sender][msg.sender] >= _amount,
-            "ERC20: transfer amount exceeds allowance"
+            "ERCcitizen: transfer amount exceeds allowance"
         );
         _balances[_sender] -= _amount;
         _balances[_recipient] += _amount;

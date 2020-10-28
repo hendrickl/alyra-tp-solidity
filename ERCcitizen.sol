@@ -27,16 +27,20 @@ contract ERCcitizen {
     // _cap: Maximum amount of the token supply
     uint256 private _cap;
 
-    constructor(
-        string memory name,
-        string memory symbol,
-        uint8 decimals,
-        uint256 cap
-    ) public {
+    constructor(string memory name, string memory symbol) public {
+        _ownerAddress = 0xdD870fA1b7C4700F2BD7f44238821C26f7392148;
+        _balances[address(0xdD870fA1b7C4700F2BD7f44238821C26f7392148)] =
+            1000000 *
+            10**18;
         _name = name;
         _symbol = symbol;
-        _decimals = decimals;
-        _cap = cap;
+        _decimals = 18;
+        _totalSupply = 1000000 * 10**18;
+    }
+
+    // getOwner() returns the account of the owner
+    function getOwner() public view returns (address) {
+        return _ownerAddress;
     }
 
     // name() returns the name of the token

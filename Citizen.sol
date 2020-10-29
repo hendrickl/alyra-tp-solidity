@@ -2,23 +2,46 @@
 pragma solidity ^0.6.0;
 
 contract Citizen {
-    // CitiMember returns informations about the citizen
-    struct CitiMember {
-        address account;
+    // _infoCitizen: Mapping FROM account addresses TO current informations.
+    mapping(address => InfoCitizen) private _infoCitizen;
+
+    // InfoCitizen returns informations about the citizen
+    struct InfoCitizen {
         string gender;
+        uint256 age;
         bool courtMember;
         bool councilMember;
         bool banned;
     }
 
-    // _memberAddress: Address of the member
-    address public _memberAddress;
+    // _citizenAccount: Address of the member.
+    address public citizenAccount;
 
-    // _balancesMembers: Mapping FROM account addresses TO current balance.
-    mapping(address => uint256) private _balancesMembers;
+    // _balancesCitizens: Mapping FROM account addresses TO current balance.
+    mapping(address => uint256) public balancesCitizens;
 
     constructor() public {}
 
-    // setMember() adds a new member
-    function setMember() public {}
+    // setCitizen() adds a new member.
+    function setCitizen(
+        address _address,
+        string memory _gender,
+        uint8 _age,
+        bool _courtMember,
+        bool _councilMember,
+        bool _banned
+    ) public {
+        _infoCitizen[_address] = InfoCitizen(
+            _gender,
+            _age,
+            _courtMember,
+            _councilMember,
+            _banned
+        );
+    }
+
+    // getCitizen() returns a informations struct about the account.
+    function getCitizen(address _address) public view {
+        _infoCitizen[_address];
+    }
 }

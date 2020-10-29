@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+import "ERCcitizen.sol";
 
 contract Citizen {
+    // owner
+    address ownerCitizen = payable(0xdD870fA1b7C4700F2BD7f44238821C26f7392148);
+
     // InfoCitizen returns informations about the citizen.
     struct InfoCitizen {
         //address payable citizen;

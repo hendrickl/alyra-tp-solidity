@@ -5,7 +5,7 @@ contract Citizen {
     // _infoCitizen: Mapping FROM account addresses TO current informations.
     mapping(address => InfoCitizen) private _infoCitizen;
 
-    // InfoCitizen returns informations about the citizen
+    // InfoCitizen returns informations about the citizen.
     struct InfoCitizen {
         string gender;
         uint256 age;
@@ -14,7 +14,7 @@ contract Citizen {
         bool banned;
     }
 
-    // _citizenAccount: Address of the member.
+    // _citizenAccount: Address of the citizen.
     address public citizenAccount;
 
     // _balancesCitizens: Mapping FROM account addresses TO current balance.
@@ -22,7 +22,7 @@ contract Citizen {
 
     constructor() public {}
 
-    // setCitizen() adds a new member.
+    // setCitizen() adds a new citizen.
     function setCitizen(
         address _address,
         string memory _gender,

@@ -12,7 +12,7 @@ contract Citizen {
         bool banned;
     }
 
-    // infoCitizens: Mapping FROM account addresses TO current informations.
+    // infoCitizens: Mapping FROM account addresses TO current administrative informations.
     mapping(address => InfoCitizen) public infoCitizens;
 
     // _balancesCitizens: Mapping FROM account addresses TO current balance.

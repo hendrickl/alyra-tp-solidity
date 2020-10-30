@@ -28,14 +28,14 @@ contract ERCcitizen {
     uint256 private _cap;
 
     constructor(string memory name, string memory symbol) public {
-        _ownerAddress = 0xdD870fA1b7C4700F2BD7f44238821C26f7392148;
-        _balances[address(0xdD870fA1b7C4700F2BD7f44238821C26f7392148)] =
-            1000000 *
+        _ownerAddress = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
+        _balances[address(0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9)] =
+            500 *
             10**18;
         _name = name;
         _symbol = symbol;
         _decimals = 18;
-        _totalSupply = 1000000 * 10**18;
+        _totalSupply = 5000 * 10**18;
     }
 
     // getOwner() returns the account of the owner

@@ -13,24 +13,28 @@ contract Citizen {
     // peopleCount and _step accounts the population.
     uint256 public peopleCount;
 
-    // InfoCitizen returns informations about the citizen.
+    // InfoCitizen returns community informations about the citizen.
     struct InfoCitizen {
-        string gender;
-        uint256 age;
+        uint256 id;
         bool courtMember;
         bool councilMember;
-        mapping(address => uint256) balancesCitizens;
+        string companyMember;
     }
 
     // Identity returns the identity the citizen.
     struct Identity {
         string firstName;
         string lastName;
+        string gender;
+        uint256 age;
         string location;
     }
 
     // infoCitizens: Mapping FROM account addresses TO current administrative informations.
     mapping(address => InfoCitizen) public infoCitizens;
+
+    // idCitizens: Mapping FROM an id TO the identity of a citizen.
+    mapping(uint256 => Identity) public idCitizens;
 
     // _balancesCitizens: Mapping FROM account addresses TO current balance.
     mapping(address => uint256) public balancesCitizens;
@@ -49,39 +53,23 @@ contract Citizen {
         _;
     }
 
-    // setCitizen() adds a new citizen.
-    function setCitizen(
+    // addCitizen() adds a new citizen.
+    function addCitizen(
         address _address,
-        string memory _gender,
-        uint8 _age,
         bool _courtMember,
-        bool _councilMember
+        bool _councilMember,
+        string memory _companyMember
     ) public onlyOwnerCitizen() {
-        infoCitizens[_address] = InfoCitizen(
-            _gender,
-            _age,
-            _courtMember,
-            _councilMember
-        );
         peopleCount += 1;
+        infoCitizens[_address] = InfoCitizen(
+            peopleCount,
+            _courtMember,
+            _councilMember,
+            _companyMember
+        );
     }
 
     // delCitizen() deletes a citizen.
-    function delCitizen(
-        address _address,
-        string memory _gender,
-        uint8 _age,
-        bool _courtMember,
-        bool _councilMember
-    ) public onlyOwnerCitizen() {
-        infoCitizens[_address] = InfoCitizen(
-            _gender,
-            _age,
-            _courtMember,
-            _councilMember
-        );
-        peopleCount -= 1;
-    }
 
     // mapCitizen() sets 100 CTZ in the amount of the welcoming.
     function mapCitizen(address _address) public onlyOwnerCitizen {

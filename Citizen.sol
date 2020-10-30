@@ -10,9 +10,8 @@ contract Citizen {
     // ownerCitizen: Address of the owner, used for administrative and sensitive function.
     address public ownerCitizen;
 
-    // _count and _step accounts the population.
-    uint256 private _count;
-    uint256 private _step;
+    // peopleCount and _step accounts the population.
+    uint256 public peopleCount;
 
     // InfoCitizen returns informations about the citizen.
     struct InfoCitizen {
@@ -23,6 +22,13 @@ contract Citizen {
         mapping(address => uint256) balancesCitizens;
     }
 
+    // Identity returns the identity the citizen.
+    struct Identity {
+        string firstName;
+        string lastName;
+        string location;
+    }
+
     // infoCitizens: Mapping FROM account addresses TO current administrative informations.
     mapping(address => InfoCitizen) public infoCitizens;
 
@@ -31,8 +37,7 @@ contract Citizen {
 
     constructor() public {
         ownerCitizen = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
-        _count = 0;
-        _step = 1;
+        peopleCount = 0;
     }
 
     // A modifier for checking if the `msg.sender` is the owner.
@@ -58,24 +63,28 @@ contract Citizen {
             _courtMember,
             _councilMember
         );
+        peopleCount += 1;
+    }
+
+    // delCitizen() deletes a citizen.
+    function delCitizen(
+        address _address,
+        string memory _gender,
+        uint8 _age,
+        bool _courtMember,
+        bool _councilMember
+    ) public onlyOwnerCitizen() {
+        infoCitizens[_address] = InfoCitizen(
+            _gender,
+            _age,
+            _courtMember,
+            _councilMember
+        );
+        peopleCount -= 1;
     }
 
     // mapCitizen() sets 100 CTZ in the amount of the welcoming.
     function mapCitizen(address _address) public onlyOwnerCitizen {
         balancesCitizens[_address] = 100;
-    }
-
-    // increment() and decrease() manage the number of citizens.
-    function increment() public onlyOwnerCitizen {
-        _count += _step;
-    }
-
-    function decrease() public onlyOwnerCitizen {
-        _count -= _step;
-    }
-
-    // nbPopulation returns the total of citizens.
-    function nbPopulation() public view returns (uint256) {
-        return _count;
     }
 }

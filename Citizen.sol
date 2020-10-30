@@ -7,8 +7,11 @@ pragma solidity ^0.6.0;
 import "ERCcitizen.sol";
 
 contract Citizen {
-    // ownerCitizen: Address of the owner, used for administrative and sensitive function.
+    // ownerCitizen: address of the owner, used for administrative and sensitive function.
     address public ownerCitizen;
+
+    // addressCitizen: address of the current citizen
+    address private _addressCitizen;
 
     // peopleCount and _step accounts the population.
     uint256 public peopleCount;
@@ -34,7 +37,10 @@ contract Citizen {
     mapping(address => InfoCitizen) public infoCitizens;
 
     // idCitizens: Mapping FROM an id TO the identity of a citizen.
-    mapping(uint256 => Identity) public idCitizens;
+    mapping(uint256 => Identity) public idtCitizens;
+
+    // citizenId: Mapping FROM an id (peopleCount) TO the address affiliated with.
+    mapping(uint256 => address) public citizenId;
 
     // _balancesCitizens: Mapping FROM account addresses TO current balance.
     mapping(address => uint256) public balancesCitizens;
@@ -42,6 +48,7 @@ contract Citizen {
     constructor() public {
         ownerCitizen = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
         peopleCount = 0;
+        citizenId[peopleCount] = _addressCitizen;
     }
 
     // A modifier for checking if the `msg.sender` is the owner.
@@ -54,6 +61,7 @@ contract Citizen {
     }
 
     // addCitizen() adds a new citizen.
+    // addCitizen() uses the struct InfoCitizen and fill the mapping infoCitizens.
     function addCitizen(
         address _address,
         bool _courtMember,
@@ -69,7 +77,31 @@ contract Citizen {
         );
     }
 
-    // delCitizen() deletes a citizen.
+    modifier onlyCitizen {
+        require(
+            msg.sender == address(_addressCitizen),
+            "Citizen: Only citizen can perform this action"
+        );
+        _;
+    }
+
+    // register() adds the identity of the citizen.
+    // register() uses the struct Identity and fills the mapping idCitizens.
+    function register(
+        string memory _firstName,
+        string memory _lastName,
+        string memory _gender,
+        uint256 _age,
+        string memory _location
+    ) public onlyCitizen {
+        idtCitizens[peopleCount] = Identity(
+            _firstName,
+            _lastName,
+            _gender,
+            _age,
+            _location
+        );
+    }
 
     // mapCitizen() sets 100 CTZ in the amount of the welcoming.
     function mapCitizen(address _address) public onlyOwnerCitizen {

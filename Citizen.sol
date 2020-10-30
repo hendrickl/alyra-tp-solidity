@@ -13,18 +13,19 @@ contract Citizen {
     // addressCitizen: address of the current citizen
     address private _addressCitizen;
 
-    // peopleCount and _step accounts the population.
+    // peopleCount is a counter of the population.
+    // peopleCount is also an citizen id.
     uint256 public peopleCount;
 
-    // InfoCitizen returns community informations about the citizen.
-    struct InfoCitizen {
+    // StatusCtn returns status informations about the citizen.
+    struct StatusCtn {
         uint256 id;
         bool courtMember;
         bool councilMember;
         string companyMember;
     }
 
-    // Identity returns the identity the citizen.
+    // Identity returns the identity of the citizen.
     struct Identity {
         string firstName;
         string lastName;
@@ -33,22 +34,22 @@ contract Citizen {
         string location;
     }
 
-    // infoCitizens: Mapping FROM account addresses TO current administrative informations.
-    mapping(address => InfoCitizen) public infoCitizens;
+    // statusCitizens: Mapping FROM account addresses TO current administrative status.
+    mapping(address => StatusCtn) public statusCitizens;
 
-    // idCitizens: Mapping FROM an id TO the identity of a citizen.
+    // idtCitizens: Mapping FROM an id TO the identity of a citizen.
     mapping(uint256 => Identity) public idtCitizens;
 
     // citizenId: Mapping FROM an id (peopleCount) TO the address affiliated with.
     mapping(uint256 => address) public citizenId;
 
-    // _balancesCitizens: Mapping FROM account addresses TO current balance.
+    // balancesCitizens: Mapping FROM account addresses TO current balance.
     mapping(address => uint256) public balancesCitizens;
 
     constructor() public {
         ownerCitizen = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
         peopleCount = 0;
-        citizenId[peopleCount] = _addressCitizen;
+        citizenId[peopleCount] = address(_addressCitizen);
     }
 
     // A modifier for checking if the `msg.sender` is the owner.
@@ -69,7 +70,7 @@ contract Citizen {
         string memory _companyMember
     ) public onlyOwnerCitizen() {
         peopleCount += 1;
-        infoCitizens[_address] = InfoCitizen(
+        statusCitizens[_address] = StatusCtn(
             peopleCount,
             _courtMember,
             _councilMember,

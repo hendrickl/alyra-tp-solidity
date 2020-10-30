@@ -8,18 +8,18 @@ import "ERCcitizen.sol";
 
 contract Citizen {
     // ownerCitizen: address of the owner, used for administrative and sensitive function.
-    address public ownerCitizen;
+    address private _ownerCitizen;
 
     // addressCitizen: address of the current citizen
     address private _addressCitizen;
 
     // peopleCount is a counter of the population.
-    // peopleCount is also an citizen id.
+    // peopleCount is also a citizen ID.
     uint256 public peopleCount;
 
     // StatusCtn returns status informations about the citizen.
     struct StatusCtn {
-        uint256 id;
+        uint256 peopleCount;
         bool courtMember;
         bool councilMember;
         string companyMember;
@@ -35,27 +35,36 @@ contract Citizen {
     }
 
     // statusCitizens: Mapping FROM account addresses TO current administrative status.
+    // addressCitizen => struct StatusCtn
     mapping(address => StatusCtn) public statusCitizens;
 
-    // idtCitizens: Mapping FROM an id TO the identity of a citizen.
+    // idtCitizens: Mapping FROM an ID TO the identity of a citizen.
+    // ID => struct Identity
     mapping(uint256 => Identity) public idtCitizens;
 
-    // citizenId: Mapping FROM an id (peopleCount) TO the address affiliated with.
-    mapping(uint256 => address) public citizenId;
+    // citizenAddr: Mapping FROM a ID TO the address affiliated with.
+    // ID => addressCitizen
+    mapping(uint256 => address) public citizenAddr;
+
+    // citizenId: Mapping FROM a counter TO an id.
+    // peopleCount => ID
+    mapping(uint256 => uint256) public citizenId;
 
     // balancesCitizens: Mapping FROM account addresses TO current balance.
     mapping(address => uint256) public balancesCitizens;
 
     constructor() public {
-        ownerCitizen = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
+        _ownerCitizen = 0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9;
+        //_addressCitizen = citizenAddr[peopleCount];
+        citizenId[peopleCount] = peopleCount;
+        citizenAddr[peopleCount] = _addressCitizen;
         peopleCount = 0;
-        citizenId[peopleCount] = address(_addressCitizen);
     }
 
     // A modifier for checking if the `msg.sender` is the owner.
     modifier onlyOwnerCitizen {
         require(
-            msg.sender == ownerCitizen,
+            msg.sender == _ownerCitizen,
             "Citizen: Only owner can perform this action"
         );
         _;
@@ -70,6 +79,8 @@ contract Citizen {
         string memory _companyMember
     ) public onlyOwnerCitizen() {
         peopleCount += 1;
+        citizenAddr[peopleCount] = _address;
+        citizenId[peopleCount] = peopleCount;
         statusCitizens[_address] = StatusCtn(
             peopleCount,
             _courtMember,
@@ -80,7 +91,7 @@ contract Citizen {
 
     modifier onlyCitizen {
         require(
-            msg.sender == address(_addressCitizen),
+            msg.sender == _addressCitizen,
             "Citizen: Only citizen can perform this action"
         );
         _;
@@ -104,7 +115,7 @@ contract Citizen {
         );
     }
 
-    // mapCitizen() sets 100 CTZ in the amount of the welcoming.
+    // mapCitizen() sends 100 CTZ in the account of the welcomed citizen.
     function mapCitizen(address _address) public onlyOwnerCitizen {
         balancesCitizens[_address] = 100;
     }

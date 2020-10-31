@@ -115,8 +115,8 @@ contract Citizen {
         );
     }
 
-    // mapCitizen() sends 100 CTZ in the account of the welcomed citizen.
-    function mapCitizen(address _address) public onlyOwnerCitizen {
+    // transferCtz() sends 100 CTZ in the account of the welcomed citizen.
+    function transferCtz(address _address) public onlyOwnerCitizen {
         balancesCitizens[_address] = 100;
     }
 }

@@ -15,7 +15,7 @@ contract Citizen {
 
     uint256 private _id;
 
-    // StatusCtn returns status informations about the citizen.
+    // StatusCtn contains status informations about the citizen.
     struct StatusCtn {
         uint256 peopleCount;
         bool courtMember;
@@ -23,7 +23,7 @@ contract Citizen {
         string companyMember;
     }
 
-    // Identity returns the identity of the citizen.
+    // Identity contains informations about the identity of the citizen.
     struct Identity {
         string firstName;
         string lastName;
@@ -68,11 +68,11 @@ contract Citizen {
         _;
     }
 
-    // A modifier for checking if the `msg.sender` is a citizen.
+    // A modifier for checking if the `msg.sender` has been set by the owner.
     modifier onlyOwnerCitizen {
         require(
             citizenAddr[_peopleCount] == msg.sender,
-            "Citizen: Only citizen can perform this action"
+            "Citizen: Only owner can perform this action"
         );
         _;
     }
@@ -127,5 +127,6 @@ contract Citizen {
     // transferCtz() sends 100 CTZ in the account of the welcomed citizen.
     function transferCtz(address _address) public onlyOwnerState {
         balancesCitizens[_address] = 100;
+        // +-amount
     }
 }

@@ -56,6 +56,7 @@ contract Citizen {
         _ownerCitizen = address(0x65c2c71FB6b78d07dc1Adc81ecdaC7983A5572D9);
         citizenAddr[_peopleCount] = _addressCitizen;
         citizenId[_addressCitizen] = _peopleCount;
+        balancesCitizens[_ownerCitizen] = 500 * 10**18;
         _peopleCount = 0;
     }
 
@@ -124,9 +125,13 @@ contract Citizen {
         return _peopleCount;
     }
 
-    // transferCtz() sends 100 CTZ in the account of the welcomed citizen.
-    function transferCtz(address _address) public onlyOwnerState {
-        balancesCitizens[_address] = 100;
-        // +-amount
+    // transferCtz() sends 10 CTZ in the account of the welcomed citizen.
+    function transferCtz(address _recipient) public onlyOwnerState {
+        require(
+            balancesCitizens[msg.sender] >= 10,
+            "Citizen: transfer amount exceeds balance"
+        );
+        balancesCitizens[msg.sender] -= 10;
+        balancesCitizens[_recipient] += 10;
     }
 }
